@@ -1,4 +1,7 @@
 #include "game.h"
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -11,23 +14,42 @@ void Game::event() {
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { // oneliner
       sf::Vector2i position = sf::Mouse::getPosition(window);
-      Point p(position.x, position.y);
-      if (p.x >= 0 && p.y >= 0 && p.x < width && p.y < height) {
-        set.insert(p);
-        std::cout << p.x << " " << p.y << std::endl;
+      sf::CircleShape circle;
+      circle.setPosition(position.x, position.y);
+      circle.setRadius(radius);
+      for (size_t i = 0; i < circle.getPointCount(); i++) {
+        auto point = circle.getPoint(i);
+        Point p(point.x + position.x - radius, point.y + position.y - radius);
+        if (p.x >= 0 && p.y >= 0 && p.x < width && p.y < height) {
+          set.insert(p);
+          std::cout << p.x << " " << p.y << std::endl;
+        }
       }
+    }
+    if (event.type == sf::Event::KeyPressed) {
+      if (event.key.scancode == sf::Keyboard::Scan::PageUp)
+        incRadius();
+      if (event.key.scancode == sf::Keyboard::Scan::PageDown)
+        decRadius();
     }
   }
 }
 
-void Game::draw() {
+void Game::draw() const {
+  // Drwaing points
   for (auto &point : set) {
     sf::Vertex dot(sf::Vector2f(point.x, point.y), sf::Color::White);
     window.draw(&dot, 1, sf::Points);
   }
-  window.display();
+  // Drawing cursor
+  sf::CircleShape cursor;
+  cursor.setRadius(radius);
+  cursor.setOrigin(radius, radius);
+  sf::Vector2i position = sf::Mouse::getPosition(window);
+  cursor.setPosition(position.x, position.y);
+  window.draw(cursor);
 }
-void Game::saveGame() {
+void Game::saveGame() const {
   std::cout << "Saving game" << std::endl;
   std::ofstream savefile("save.txt");
   for (auto &point : set) {
