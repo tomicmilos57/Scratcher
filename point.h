@@ -3,7 +3,8 @@
 struct Point {
   float x;
   float y;
-  Point(float xx, float yy) : x(xx), y(yy) {}
+  int color;
+  Point(float xx, float yy, int color = 0) : x(xx), y(yy), color(color) {}
   friend bool operator==(const Point &a, const Point &b) {
     return a.x == b.x && a.y == b.y;
   }
