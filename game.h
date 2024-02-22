@@ -12,8 +12,9 @@ private:
   std::set<Point> set;
   int width;
   int height;
-  int radius = 10;
+  int radius = 1;
   int color = 0;
+  int layer = 1;
   static sf::Color colors[];
 
 public:
@@ -25,8 +26,12 @@ public:
   void loadGame();
   void incRadius() { radius < 20 ? radius += 1 : 20; }
   void decRadius() { radius > 1 ? radius -= 1 : 1; }
-  void incColor() { color < 6 ? color += 1 : 6; }
-  void decColor() { color > 0 ? color -= 1 : 0; }
+  void incColor() { color < 6 ? color += 1 : color = 0; }
+  void decColor() { color > 0 ? color -= 1 : color = 6; }
+
+private:
+  void insert_pixel(Point);
+  void fill_line(int, int, int, int);
 };
 
 #endif
