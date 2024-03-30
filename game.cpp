@@ -29,23 +29,33 @@ void Game::event() {
                 clear_stack();
                 prev = p;
                 newstroke = false;
-                stroke = new Stroke();
-                arr.push_back(stroke);
+                if(status == Status::dot){
+                    stroke = new Stroke();
+                    arr.push_back(stroke);
+                }
             }
-            //insert_pixel(p);
-            if(stroke != arr.back()) exit(1);
-            fill_line(stroke, p.x, p.y, prev.x, prev.y);
-            prev = p;
+            if(status == Status::dot){
+                fill_line(stroke, p.x, p.y, prev.x, prev.y);
+                prev = p;
+            }
+            if(status == Status::rectangle){
+                overlay_draw = true; // Enabeling overlay
+                rect_overlay->setSize(sf::Vector2f(p.x - prev.x, p.y - prev.y));
+                rect_overlay->setPosition(prev.x,prev.y);
+                rect_overlay->setOutlineColor(colors[color]);
+            }
         }
         if (event.type == sf::Event::MouseButtonReleased) {
             newstroke = true;
+            if(status == Status::rectangle) insert_rect();
+            overlay_draw = false; //Stopping the overlay mode
             event.type = sf::Event::Count; // Needed so ButtonReleased works correctly
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.scancode == sf::Keyboard::Scan::PageUp)
-                incRadius();
-            if (event.key.scancode == sf::Keyboard::Scan::PageDown)
-                decRadius();
+            if (event.key.scancode == sf::Keyboard::Scan::D && !overlay_draw)
+                status = Status::dot; //Should be && with overlay_draw
+            if (event.key.scancode == sf::Keyboard::Scan::R && !overlay_draw)
+                status = Status::rectangle; //Should be && with overlay_draw
             if (event.key.scancode == sf::Keyboard::Scan::Up)
                 incColor();
             if (event.key.scancode == sf::Keyboard::Scan::Down)
@@ -80,6 +90,8 @@ void Game::draw() const {
             window.draw(&dot, 1, sf::Points);
         }
     }
+    // Drawing overlay
+    if(status == Status::rectangle && overlay_draw) window.draw(*rect_overlay);
     // Drawing cursor
     sf::CircleShape cursor;
     cursor.setRadius(radius);
@@ -181,6 +193,18 @@ void Game::clear_stack(){
         delete stack_undo.top();
         stack_undo.pop();
     }
+}
+void Game::insert_rect(){
+    Stroke *stroke = new Stroke;
+    arr.push_back(stroke);
+    float x1 = rect_overlay->getPosition().x;
+    float y1 = rect_overlay->getPosition().y;
+    float width = rect_overlay->getSize().x;
+    float height = rect_overlay->getSize().y;
+    fill_line(stroke, x1,y1,x1+width,y1);
+    fill_line(stroke, x1+width,y1,x1+width,y1+height);
+    fill_line(stroke, x1+width,y1+height,x1,y1+height);
+    fill_line(stroke, x1,y1+height,x1,y1);
 }
 
 /*sf::Vector2i position = sf::Mouse::getPosition(window);
