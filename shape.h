@@ -2,8 +2,11 @@
 #define shape_h
 //#include "point.h"
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Shape.hpp>
 class Point;
 class Game;
+class Stroke;
 class Shape{ //Abstract class 
     protected:
         Game* game;
@@ -34,5 +37,20 @@ class Shape_Rect : public Shape{
         void drawOverlay(bool) const;
         void insert();
         //Destructor
+};
+class Shape_Circle : public Shape{
+    private:
+        sf::CircleShape* circle_overlay;
+        void drawCircle(Stroke*,int x, int y, int r);
+        void drawEightPoints(Stroke*, int xc, int yc, int x, int y);
+    public:
+        Shape_Circle(Game* g) : Shape(g) {
+            circle_overlay = new sf::CircleShape();
+            circle_overlay->setFillColor(sf::Color(0,0,0,0));
+            circle_overlay->setOutlineThickness(1);
+        }
+        void onClick(Point& prev, Point& p, bool &newstroke);
+        void drawOverlay(bool) const;
+        void insert();
 };
 #endif

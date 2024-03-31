@@ -1,6 +1,7 @@
 #include "game.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
@@ -10,12 +11,10 @@
 sf::Color Game::colors[] = {sf::Color::White,   sf::Color::Blue,
     sf::Color::Cyan,    sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,
-    sf::Color::Yellow}; //, sf::Color::Black
+    sf::Color::Yellow};
 bool newstroke = true;
 void Game::event() {
     sf::Event event;
-
-    //static Stroke *stroke = new Stroke();
     static Point prev(0, 0, 0, 0);
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -29,16 +28,16 @@ void Game::event() {
         }
         if (event.type == sf::Event::MouseButtonReleased) {
             newstroke = true;
-            //if(status == Status::rectangle) insert_rect();
             shape->insert();
-            //overlay_draw = false; //Stopping the overlay mode
             event.type = sf::Event::Count; // Needed so ButtonReleased works correctly
         }
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.scancode == sf::Keyboard::Scan::D)
-                shape = &dot;
+                shape = &dot; //newstroke = true;
             if (event.key.scancode == sf::Keyboard::Scan::R)
-                shape = &rect;
+                shape = &rect; // newstroke = true
+            if (event.key.scancode == sf::Keyboard::Scan::C)
+                shape = &circle; //newstroke = true;
             if (event.key.scancode == sf::Keyboard::Scan::Up)
                 incColor();
             if (event.key.scancode == sf::Keyboard::Scan::Down)
@@ -47,25 +46,22 @@ void Game::event() {
                     && sf::Keyboard::isKeyPressed(sf::Keyboard::Z)
                     &&  sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)){
                 if(!stack_undo.empty()){ 
-                    arr.push_back(stack_undo.top());//App crashes if arr is empty
+                    arr.push_back(stack_undo.top());
                     stack_undo.pop();
                 }
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)
                     && sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
                 if(!arr.empty()){
-                    stack_undo.push(arr.back());//App crashes if arr is empty
+                    stack_undo.push(arr.back());
                     arr.pop_back();
                 }
             }
-            /*if (event.key.scancode == sf::Keyboard::Scan::Delete)
-              color = 7; // Black SHOULD ACCTUALY REMOVE FROM SET*/
         }
     }
 }
 
 void Game::draw() const {
-
     // Drwaing points
     for (auto &stroke : arr){
         for (auto &point : stroke->arr) {
@@ -75,15 +71,10 @@ void Game::draw() const {
     }
     // Drawing overlay
     shape->drawOverlay(newstroke);
-    //if(status == Status::rectangle && overlay_draw) window.draw(*rect_overlay); //depricated
     // Drawing cursor
-    sf::CircleShape cursor;
-    cursor.setRadius(radius);
-    cursor.setOrigin(radius, radius);
-    cursor.setFillColor(colors[color]);
     sf::Vector2i position = sf::Mouse::getPosition(window);
-    cursor.setPosition(position.x, position.y);
-    window.draw(cursor);
+    sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
+    window.draw(&dot, 1, sf::Points);
 }
 /*void Game::saveGame() const {
   std::cout << "Saving game" << std::endl;
@@ -117,18 +108,6 @@ void Game::clear_stack(){
         stack_undo.pop();
     }
 }
-/*void Game::insert_rect(){
-    Stroke *stroke = new Stroke;
-    arr.push_back(stroke);
-    float x1 = rect_overlay->getPosition().x;
-    float y1 = rect_overlay->getPosition().y;
-    float width = rect_overlay->getSize().x;
-    float height = rect_overlay->getSize().y;
-    fill_line(stroke, x1,y1,x1+width,y1);
-    fill_line(stroke, x1+width,y1,x1+width,y1+height);
-    fill_line(stroke, x1+width,y1+height,x1,y1+height);
-    fill_line(stroke, x1,y1+height,x1,y1);
-}*/
 void Game::fill_line(Stroke* stroke, int x1, int y1, int x2, int y2) {
     int x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
     dx = x2 - x1;
@@ -189,18 +168,3 @@ void Game::fill_line(Stroke* stroke, int x1, int y1, int x2, int y2) {
         }
     }
 }
-
-
-/*sf::Vector2i position = sf::Mouse::getPosition(window);
-  sf::CircleShape circle;
-  circle.setPosition(position.x, position.y);
-  circle.setRadius(radius);
-  for (size_t i = 0; i < circle.getPointCount(); i++) {
-  auto point = circle.getPoint(i);
-  Point p(point.x + position.x - radius, point.y + position.y - radius,
-  color);
-  if (p.x >= 0 && p.y >= 0 && p.x < width && p.y < height) {
-  set.insert(p);
-// std::cout << p.x << " " << p.y << std::endl;
-}
-}*/
