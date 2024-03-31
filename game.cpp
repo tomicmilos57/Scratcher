@@ -15,7 +15,7 @@ bool newstroke = true;
 void Game::event() {
     sf::Event event;
 
-    static Stroke *stroke = new Stroke();
+    //static Stroke *stroke = new Stroke();
     static Point prev(0, 0, 0, 0);
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -25,37 +25,20 @@ void Game::event() {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             sf::Vector2i position = sf::Mouse::getPosition(window);
             Point p(position.x, position.y, color);
-            if (newstroke) { // this could be improved
-                clear_stack();
-                prev = p;
-                newstroke = false;
-                if(status == Status::dot){
-                    stroke = new Stroke();
-                    arr.push_back(stroke);
-                }
-            }
-            if(status == Status::dot){
-                fill_line(stroke, p.x, p.y, prev.x, prev.y);
-                prev = p;
-            }
-            if(status == Status::rectangle){
-                overlay_draw = true; // Enabeling overlay
-                rect_overlay->setSize(sf::Vector2f(p.x - prev.x, p.y - prev.y));
-                rect_overlay->setPosition(prev.x,prev.y);
-                rect_overlay->setOutlineColor(colors[color]);
-            }
+            shape->onClick(prev, p, newstroke);
         }
         if (event.type == sf::Event::MouseButtonReleased) {
             newstroke = true;
-            if(status == Status::rectangle) insert_rect();
-            overlay_draw = false; //Stopping the overlay mode
+            //if(status == Status::rectangle) insert_rect();
+            shape->insert();
+            //overlay_draw = false; //Stopping the overlay mode
             event.type = sf::Event::Count; // Needed so ButtonReleased works correctly
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.scancode == sf::Keyboard::Scan::D && !overlay_draw)
-                status = Status::dot; //Should be && with overlay_draw
-            if (event.key.scancode == sf::Keyboard::Scan::R && !overlay_draw)
-                status = Status::rectangle; //Should be && with overlay_draw
+            if (event.key.scancode == sf::Keyboard::Scan::D)
+                shape = &dot;
+            if (event.key.scancode == sf::Keyboard::Scan::R)
+                shape = &rect;
             if (event.key.scancode == sf::Keyboard::Scan::Up)
                 incColor();
             if (event.key.scancode == sf::Keyboard::Scan::Down)
@@ -91,7 +74,8 @@ void Game::draw() const {
         }
     }
     // Drawing overlay
-    if(status == Status::rectangle && overlay_draw) window.draw(*rect_overlay);
+    shape->drawOverlay(newstroke);
+    //if(status == Status::rectangle && overlay_draw) window.draw(*rect_overlay); //depricated
     // Drawing cursor
     sf::CircleShape cursor;
     cursor.setRadius(radius);
@@ -122,6 +106,29 @@ void Game::draw() const {
   savefile.close();
   return;
   } // insert_pixel(Point(x, y, color));*/
+void Game::insert_pixel(Stroke *stroke, Point p) {
+    if (p.x >= 0 && p.y >= 0 && p.x < width && p.y < height) {
+        stroke->addPoint(p);
+    }
+}
+void Game::clear_stack(){
+    while(!stack_undo.empty()){
+        delete stack_undo.top();
+        stack_undo.pop();
+    }
+}
+/*void Game::insert_rect(){
+    Stroke *stroke = new Stroke;
+    arr.push_back(stroke);
+    float x1 = rect_overlay->getPosition().x;
+    float y1 = rect_overlay->getPosition().y;
+    float width = rect_overlay->getSize().x;
+    float height = rect_overlay->getSize().y;
+    fill_line(stroke, x1,y1,x1+width,y1);
+    fill_line(stroke, x1+width,y1,x1+width,y1+height);
+    fill_line(stroke, x1+width,y1+height,x1,y1+height);
+    fill_line(stroke, x1,y1+height,x1,y1);
+}*/
 void Game::fill_line(Stroke* stroke, int x1, int y1, int x2, int y2) {
     int x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
     dx = x2 - x1;
@@ -183,29 +190,6 @@ void Game::fill_line(Stroke* stroke, int x1, int y1, int x2, int y2) {
     }
 }
 
-void Game::insert_pixel(Stroke *stroke, Point p) {
-    if (p.x >= 0 && p.y >= 0 && p.x < width && p.y < height) {
-        stroke->addPoint(p);
-    }
-}
-void Game::clear_stack(){
-    while(!stack_undo.empty()){
-        delete stack_undo.top();
-        stack_undo.pop();
-    }
-}
-void Game::insert_rect(){
-    Stroke *stroke = new Stroke;
-    arr.push_back(stroke);
-    float x1 = rect_overlay->getPosition().x;
-    float y1 = rect_overlay->getPosition().y;
-    float width = rect_overlay->getSize().x;
-    float height = rect_overlay->getSize().y;
-    fill_line(stroke, x1,y1,x1+width,y1);
-    fill_line(stroke, x1+width,y1,x1+width,y1+height);
-    fill_line(stroke, x1+width,y1+height,x1,y1+height);
-    fill_line(stroke, x1,y1+height,x1,y1);
-}
 
 /*sf::Vector2i position = sf::Mouse::getPosition(window);
   sf::CircleShape circle;

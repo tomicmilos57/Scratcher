@@ -1,6 +1,7 @@
 #ifndef Game_Scratcher
 #define Game_Scratcher
 #include "stroke.h"
+#include "shape.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -16,22 +17,21 @@ class Game {
         std::stack<Stroke*>stack_undo;
         int width;
         int height;
-        enum Status{
-            dot,rectangle
-        };
-        Status status = dot; //Option of drawing
-        sf::RectangleShape* rect_overlay; //Overlay for rectangle
-        bool overlay_draw = true; // if in overlay mode and Lclick is released, dont draw overaly
+        //enum Status{
+        //    dot,rectangle
+        //};
+        //Status status = dot; //Option of drawing
+        //sf::RectangleShape* rect_overlay; //Overlay for rectangle
+        //bool overlay_draw = true; // if in overlay mode and Lclick is released, dont draw overaly
+        Shape_Rect rect;
+        Shape_Dot dot;
+        Shape *shape = &dot;
         int radius = 1;
         int color = 0;
         static sf::Color colors[];
     public:
         Game(sf::RenderWindow &window, int w, int h)
-            : window(window), width(w), height(h) {
-                rect_overlay = new sf::RectangleShape();
-                rect_overlay->setFillColor(sf::Color(0,0,0,0));
-                rect_overlay->setOutlineThickness(1);
-            }
+            : window(window), width(w), height(h), rect(this), dot(this) {}
         void event();
         void draw() const;
     private:
@@ -45,6 +45,8 @@ class Game {
         void fill_line(Stroke*, int, int, int, int);
         void clear_stack();
         void insert_rect();
+        friend Shape_Rect;
+        friend Shape_Dot;
 };
 
 #endif
