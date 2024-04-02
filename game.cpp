@@ -21,6 +21,12 @@ void Game::event() {
             // this->saveGame();
             window.close();
         }
+        if(event.type == sf::Event::Resized){
+            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            width = event.size.width;
+            height = event.size.height;
+            window.setView(sf::View(visibleArea));
+        }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             sf::Vector2i position = sf::Mouse::getPosition(window);
             Point p(position.x, position.y, color);

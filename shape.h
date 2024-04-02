@@ -2,7 +2,6 @@
 #define shape_h
 //#include "point.h"
 #include <SFML/Graphics/RectangleShape.hpp> 
-#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Shape.hpp>
 class Point;

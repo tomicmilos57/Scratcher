@@ -4,8 +4,8 @@
 #include <SFML/Window/Mouse.hpp>
 #include <iostream>
 using namespace std;
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1024
 #define FPS 60
 
 int main() {
