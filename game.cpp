@@ -38,6 +38,8 @@ void Game::event() {
                 shape = &rect; // newstroke = true
             if (event.key.scancode == sf::Keyboard::Scan::C)
                 shape = &circle; //newstroke = true;
+            if (event.key.scancode == sf::Keyboard::Scan::L)
+                shape = &line; //newstroke = true;
             if (event.key.scancode == sf::Keyboard::Scan::Up)
                 incColor();
             if (event.key.scancode == sf::Keyboard::Scan::Down)

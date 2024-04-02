@@ -47,9 +47,9 @@ void Shape_Circle::onClick(Point& prev, Point& p, bool &newstroke){
         prev = p;
         newstroke = false;
     }
-    float radius = (-prev.x + p.x)/2;
+    float radius = sqrt((prev.x - p.x)*(prev.x - p.x) + (prev.y - p.y)*(prev.y - p.y));
     circle_overlay->setRadius(radius);//sf::Vector2f(p.x - prev.x, p.y - prev.y));
-    circle_overlay->setPosition(prev.x, prev.y);
+    circle_overlay->setPosition(prev.x - radius,prev.y - radius);
     circle_overlay->setOutlineColor(Game::colors[game->color]);
 }
 void Shape_Circle::drawOverlay(bool newstroke) const{
@@ -91,21 +91,24 @@ void Shape_Circle::drawEightPoints(Stroke* stroke, int xc, int yc, int x, int y)
     stroke->addPoint(Point(y+xc, -x+yc, game->color));
     stroke->addPoint(Point(-y+xc, -x+yc, game->color));
     stroke->addPoint(Point(-y+xc, x+yc, game->color));
-    /*sf::Vertex a(sf::Vector2f(x+xc, y+yc), Game::colors[game->color]);
-      game->window.draw(&a, 1, sf::Points);
-      sf::Vertex b(sf::Vector2f(x+xc, -y+yc), Game::colors[game->color]);
-      game->window.draw(&b, 1, sf::Points);
-      sf::Vertex c(sf::Vector2f(-x+xc, -y+yc), Game::colors[game->color]);
-      game->window.draw(&c, 1, sf::Points);
-      sf::Vertex d(sf::Vector2f(-x+xc, y+yc), Game::colors[game->color]);
-      game->window.draw(&d, 1, sf::Points);
-
-      sf::Vertex e(sf::Vector2f(y+xc, x+yc), Game::colors[game->color]);
-      game->window.draw(&e, 1, sf::Points);
-      sf::Vertex f(sf::Vector2f(y+xc, -x+yc), Game::colors[game->color]);
-      game->window.draw(&f, 1, sf::Points);
-      sf::Vertex g(sf::Vector2f(-y+xc, -x+yc), Game::colors[game->color]);
-      game->window.draw(&g, 1, sf::Points);
-      sf::Vertex h(sf::Vector2f(-y+xc, x+yc), Game::colors[game->color]);
-      game->window.draw(&h, 1, sf::Points);*/
+}
+void Shape_Line::onClick(Point& prev, Point& p, bool &newstroke){
+    if (newstroke) {
+        game->clear_stack();
+        prev = p;
+        newstroke = false;
+    }
+    line_overlay[0].position = sf::Vector2f(prev.x, prev.y);
+    line_overlay[0].color  = Game::colors[game->color];
+    line_overlay[1].position = sf::Vector2f(p.x, p.y);
+    line_overlay[1].color = Game::colors[game->color];
+}
+void Shape_Line::drawOverlay(bool newstroke) const{
+    if(!newstroke)game->window.draw(line_overlay, 2, sf::Lines);
+}
+void Shape_Line::insert(){
+    Stroke *stroke = new Stroke;
+    game->arr.push_back(stroke);
+    game->fill_line(stroke, line_overlay[0].position.x, line_overlay[0].position.y,
+            line_overlay[1].position.x, line_overlay[1].position.y);
 }

@@ -1,7 +1,8 @@
 #ifndef shape_h
 #define shape_h
 //#include "point.h"
-#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp> 
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Shape.hpp>
 class Point;
@@ -48,6 +49,19 @@ class Shape_Circle : public Shape{
             circle_overlay = new sf::CircleShape();
             circle_overlay->setFillColor(sf::Color(0,0,0,0));
             circle_overlay->setOutlineThickness(1);
+        }
+        void onClick(Point& prev, Point& p, bool &newstroke);
+        void drawOverlay(bool) const;
+        void insert();
+};
+class Shape_Line : public Shape{
+    private:
+        sf::Vertex line_overlay[2];
+    public:
+        Shape_Line(Game* g) : Shape(g) {
+            /*line_overlay = new sf::RectangleShape();
+            line_overlay->setFillColor(sf::Color(0,0,0,0));
+            line_overlay->setOutlineThickness(1);*/
         }
         void onClick(Point& prev, Point& p, bool &newstroke);
         void drawOverlay(bool) const;

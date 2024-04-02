@@ -12,7 +12,6 @@
 class Game {
     private:
         sf::RenderWindow &window;
-        //std::set<Point> set;
         std::vector<Stroke*>arr;
         std::stack<Stroke*>stack_undo;
         int width;
@@ -20,12 +19,13 @@ class Game {
         Shape_Rect rect;
         Shape_Dot dot;
         Shape_Circle circle;
+        Shape_Line line;
         Shape *shape = &dot;
         int color = 0;
         static sf::Color colors[];
     public:
         Game(sf::RenderWindow &window, int w, int h)
-            : window(window), width(w), height(h), rect(this), dot(this), circle(this) {}
+            : window(window), width(w), height(h), rect(this), dot(this), circle(this), line(this) {}
         void event();
         void draw() const;
     private:
@@ -39,6 +39,7 @@ class Game {
         friend Shape_Rect;
         friend Shape_Dot;
         friend Shape_Circle;
+        friend Shape_Line;
 };
 
 #endif

@@ -17,7 +17,7 @@ OBJECTS=$(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 .PHONY: all run clean
 all: compile
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp #$(LIB_DIR)/%.h Makefile
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BINARY): $(OBJECTS)
@@ -31,4 +31,4 @@ run: compile
 	./$(BINARY)
 
 clean:
-	$(RM) $(BINARY) $(BUILD_DIR) $(WEB_DIR)
+	$(RM) $(BINARY) $(BUILD_DIR)
