@@ -38,14 +38,18 @@ void Game::event() {
             event.type = sf::Event::Count; // Needed so ButtonReleased works correctly
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.scancode == sf::Keyboard::Scan::D)
-                shape = &dot; //newstroke = true;
-            if (event.key.scancode == sf::Keyboard::Scan::R)
-                shape = &rect; // newstroke = true
-            if (event.key.scancode == sf::Keyboard::Scan::C)
-                shape = &circle; //newstroke = true;
-            if (event.key.scancode == sf::Keyboard::Scan::L)
-                shape = &line; //newstroke = true;
+            if (event.key.scancode == sf::Keyboard::Scan::D){
+                if(shape != &dot) newstroke = true;
+                shape = &dot; }
+            if (event.key.scancode == sf::Keyboard::Scan::R){
+                if(shape != &rect) newstroke = true;
+                shape = &rect;}
+            if (event.key.scancode == sf::Keyboard::Scan::C){
+                if(shape != &circle) newstroke = true;
+                shape = &circle;}
+            if (event.key.scancode == sf::Keyboard::Scan::L){
+                if(shape != &line) newstroke = true;
+                shape = &line;}
             if (event.key.scancode == sf::Keyboard::Scan::Up)
                 incColor();
             if (event.key.scancode == sf::Keyboard::Scan::Down)
