@@ -167,11 +167,11 @@ void Shape_Select::insert(){
 	if(!phase2){
 		for(auto stroke : game->arr){
 			if(stroke_inside_select(stroke)){
-				std::cout << "Match" << std::endl;
+				//std::cout << "Match" << std::endl;
 				container.insert(stroke);
 				phase2 = true;
 			}else{
-				std::cout << "Not_match" << std::endl;
+				//std::cout << "Not_match" << std::endl;
 			}
 		}
 		if(!phase2) clear();
