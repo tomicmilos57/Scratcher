@@ -9,6 +9,7 @@
 #include <iostream>
 #include <set>
 #include <stack>
+#include <sys/select.h>
 class Game {
     private:
         sf::RenderWindow &window;
@@ -20,12 +21,13 @@ class Game {
         Shape_Dot dot;
         Shape_Circle circle;
         Shape_Line line;
+		Shape_Select select;
         Shape *shape = &dot;
         int color = 0;
         static sf::Color colors[];
     public:
         Game(sf::RenderWindow &window, int w, int h)
-            : window(window), width(w), height(h), rect(this), dot(this), circle(this), line(this) {}
+            : window(window), width(w), height(h), rect(this), dot(this), circle(this), line(this), select(this) {}
         void event();
         void draw() const;
     private:
@@ -40,6 +42,7 @@ class Game {
         friend Shape_Dot;
         friend Shape_Circle;
         friend Shape_Line;
+		friend Shape_Select;
 };
 
 #endif

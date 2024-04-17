@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RectangleShape.hpp> 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Shape.hpp>
+#include <set>
 class Point;
 class Game;
 class Stroke;
@@ -65,5 +66,24 @@ class Shape_Line : public Shape{
         void onClick(Point& prev, Point& p, bool &newstroke);
         void drawOverlay(bool) const;
         void insert();
+};
+class Shape_Select : public Shape{
+	private: 
+        sf::RectangleShape* select_overlay;
+		std::set<Stroke*> container;
+		bool phase2 = false;
+	public:
+        Shape_Select(Game* g) : Shape(g) {
+            select_overlay = new sf::RectangleShape();
+			select_overlay->setFillColor(sf::Color(75,255,255,128));
+			//select_overlay->setOutlineColor(sf::Color(0,0,128,128));
+			//select_overlay->setOutlineThickness(1);
+		}
+		void onClick(Point& prev, Point& p, bool &newstroke);
+		void drawOverlay(bool) const;
+		void insert();
+		void clear();
+	private:
+		bool stroke_inside_select(Stroke*);
 };
 #endif

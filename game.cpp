@@ -1,13 +1,13 @@
 #include "game.h"
+#include "shape.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include <fstream>
-#include <iostream>
 #include <math.h>
+#include <sys/select.h>
 sf::Color Game::colors[] = {sf::Color::White,   sf::Color::Blue,
     sf::Color::Cyan,    sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,
@@ -50,6 +50,9 @@ void Game::event() {
             if (event.key.scancode == sf::Keyboard::Scan::L){
                 if(shape != &line) newstroke = true;
                 shape = &line;}
+            if (event.key.scancode == sf::Keyboard::Scan::S){
+                if(shape != &select) newstroke = true;
+                shape = &select;static_cast<Shape_Select*>(shape)->clear();}
             if (event.key.scancode == sf::Keyboard::Scan::Up)
                 incColor();
             if (event.key.scancode == sf::Keyboard::Scan::Down)
