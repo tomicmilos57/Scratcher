@@ -1,7 +1,7 @@
-SRC_DIR=.
-LIB_DIR=.
+SRC_DIR=./src
+LIB_DIR=./h
 BUILD_DIR=build
-BINARY=a.out
+BINARY=Scratcher
 
 CXX=g++
 GDB=gdb
