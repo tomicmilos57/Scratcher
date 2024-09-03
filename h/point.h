@@ -3,10 +3,10 @@
 struct Point {
   float x;
   float y;
-  int color;
-  int layer = 0;
-  Point(float xx, float yy, int color = 0, int layer = 0)
-      : x(xx), y(yy), color(color), layer(layer) {}
+  int color; //use uint8 instead of int
+  //int layer = 0;
+  Point(float xx, float yy, int color = 0)
+      : x(xx), y(yy), color(color) {}
   friend bool operator==(const Point &a, const Point &b) {
     return a.x == b.x && a.y == b.y;
   }

@@ -5,7 +5,7 @@
 class Stroke{
     public:
         std::vector<Point> arr;
-        void addPoint(Point p){
+        void addPoint(const Point& p){
             arr.push_back(p);
         }
 };
