@@ -16,7 +16,7 @@ private:
   std::stack<Stroke *> stack_undo;
   int width;
   int height;
-  float zoom = 1.;
+  float zoom = 1;
   float xcenter;
   float ycenter;
   bool newstroke = true;

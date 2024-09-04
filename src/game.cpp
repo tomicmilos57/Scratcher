@@ -30,9 +30,9 @@ void Game::event() {
       window.setView(sf::View(visibleArea));
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-      sf::Vector2i position = sf::Mouse::getPosition(window);
-      Point p((position.x - ((float)width / 2 - xcenter)),
-              (position.y - ((float)height / 2 - ycenter)), color);
+      sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+      sf::Vector2f position = window.mapPixelToCoords(mousepos);
+      Point p(position.x, position.y, color);
       shape->onClick(prev, p, newstroke);
     }
     if (event.type == sf::Event::MouseButtonReleased) {
@@ -139,9 +139,8 @@ void Game::draw() const {
   // Drawing overlay
   shape->drawOverlay(newstroke);
   // Drawing cursor
-  sf::Vector2i position = sf::Mouse::getPosition(window);
-  sf::Vertex dot(sf::Vector2f(position.x - ((float)width / 2 - xcenter),
-                              position.y - ((float)height / 2 - ycenter)),
-                 colors[color]);
+  sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+  sf::Vector2f position = window.mapPixelToCoords(mousepos);
+  sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
   window.draw(&dot, 1, sf::Points);
 }

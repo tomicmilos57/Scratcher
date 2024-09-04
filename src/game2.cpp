@@ -6,9 +6,7 @@ Game::Game(sf::RenderWindow &window, int w, int h)
   ycenter = (float)h / 2;
   view_change();
 }
-void Game::insert_pixel(Stroke *stroke, const Point &p) {
-  stroke->addPoint(p);
-}
+void Game::insert_pixel(Stroke *stroke, const Point &p) { stroke->addPoint(p); }
 void Game::clear_stack() {
   while (!stack_undo.empty()) {
     delete stack_undo.top();
@@ -18,9 +16,10 @@ void Game::clear_stack() {
 void Game::view_change() {
   sf::View view = window.getDefaultView();
   view.setCenter(xcenter, ycenter);
-  view.zoom(zoom);
+  view.zoom(
+      zoom); // try zoom view at function
+             // https://github.com/SFML/SFML/wiki/Source:-Zoom-View-At-%28specified-pixel%29
   window.setView(view);
-  std::cout << "zoom: " << zoom << std::endl;
 }
 #include <math.h>
 void Game::fill_line(Stroke *stroke, int x1, int y1, int x2, int y2) {
