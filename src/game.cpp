@@ -13,9 +13,9 @@
 sf::Color Game::colors[] = {
     sf::Color::White,   sf::Color::Blue, sf::Color::Cyan,  sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,  sf::Color::Yellow};
+Point Game::prev(0, 0, 0);
 void Game::event() {
   sf::Event event;
-  static Point prev(0, 0, 0);
   view_change(); // Without this line, mouse and view are not aligned in
                  // beginning
   while (window.pollEvent(event)) {
@@ -143,4 +143,12 @@ void Game::draw() const {
   sf::Vector2f position = window.mapPixelToCoords(mousepos);
   sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
   window.draw(&dot, 1, sf::Points);
+}
+
+void Game::drawLine(int x, int y, int endx, int endy){
+  Point p1 = Point(x,y);
+  Point p2 = Point(endx, endy);
+  bool newstrk = false;
+  line.onClick(p1, p2, newstrk);
+  line.insert();
 }

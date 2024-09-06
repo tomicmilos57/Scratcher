@@ -28,12 +28,15 @@ private:
   Shape *shape = &dot;
   int color = 0;
   static sf::Color colors[];
+  static Point prev;
 
 public:
   Game(sf::RenderWindow &window, int w, int h);
   void event();
   void draw() const;
 
+
+  void drawLine(int x, int y, int endx, int endy);
 private:
   void saveGame() const;
   void loadGame();
