@@ -2,14 +2,17 @@
 #include "../h/shape.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/PrimitiveType.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <math.h>
-#include <sys/select.h>
+#include "../h/point.h"
+
 sf::Color Game::colors[] = {
     sf::Color::White,   sf::Color::Blue, sf::Color::Cyan,  sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,  sf::Color::Yellow};
@@ -126,15 +129,16 @@ void Game::event() {
 }
 
 void Game::draw() const {
-  sf::VertexArray va;
-  for (auto &stroke : arr) {
-    for (auto &point : stroke->arr) {
+  //sf::VertexArray va;
+  for (const sf::Drawable *stroke : arr) {
+    window.draw(*stroke);
+   /*  for (auto &point : stroke->arr) {
       va.append(
           sf::Vertex(sf::Vector2f(point.x, point.y), colors[point.color]));
-    }
+    } */
   }
 
-  window.draw(va);
+  //window.draw(va);
 
   // Drawing overlay
   shape->drawOverlay(newstroke);

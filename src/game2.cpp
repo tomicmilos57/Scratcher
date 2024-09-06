@@ -1,4 +1,5 @@
 #include "../h/game.h"
+#include "../h/stroke.h"
 Game::Game(sf::RenderWindow &window, int w, int h)
     : window(window), width(w), height(h), rect(this), dot(this), circle(this),
       line(this), select(this) {

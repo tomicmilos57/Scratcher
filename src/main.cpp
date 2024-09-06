@@ -10,21 +10,22 @@ using namespace std;
 #define WINDOW_HEIGHT 1024
 #define FPS 60
 #define DEBUGMODE 1
-#define BENCHMARK 1
+#define BENCHMARK 0
 int main() {
   cout << "WSL~!" << endl;
   sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
                           "Scratcher");
+  window.setMouseCursorVisible(false);
   window.setPosition(sf::Vector2i(100, 100));
   Game scratcher(window, WINDOW_WIDTH, WINDOW_HEIGHT);
   // scratcher.loadGame();
-#ifdef DEBUGMODE
+#if DEBUGMODE
   float fps;
   sf::Clock clock;
   sf::Time previousTime = clock.getElapsedTime();
   sf::Time currentTime;
 #endif
-#ifdef BENCHMARK
+#if BENCHMARK
   int counter = 0;
   int yrows = 1080;
   bool writeElapsedTimeOnce = false;
@@ -36,7 +37,7 @@ int main() {
     std::cout << "\b\b\b\b\b";
     window.clear();
     scratcher.event();
-#ifdef BENCHMARK
+#if BENCHMARK
     if (counter < yrows) {
       scratcher.drawLine(0, counter, 1920, counter);
       counter++;
@@ -50,7 +51,7 @@ int main() {
 #endif
     scratcher.draw();
     window.display();
-#ifdef DEBUGMODE
+#if DEBUGMODE
     currentTime = clock.getElapsedTime();
     fps = 1.0f / (currentTime.asSeconds() -
                   previousTime.asSeconds()); // the asSeconds returns a float
