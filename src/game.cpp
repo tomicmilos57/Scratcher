@@ -13,7 +13,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <math.h>
-
+#define HELP_MODE 1
 sf::Color Game::colors[] = {
     sf::Color::White,   sf::Color::Blue, sf::Color::Cyan,  sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,  sf::Color::Yellow};
@@ -49,10 +49,12 @@ void Game::event() {
       if (event.mouseWheel.delta < 0) {
         if (zoom < 2.5) {
           view_change();
-          sf::Vector2f before = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+          sf::Vector2f before =
+              window.mapPixelToCoords(sf::Mouse::getPosition(window));
           zoom += 0.1;
           view_change();
-          sf::Vector2f after = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+          sf::Vector2f after =
+              window.mapPixelToCoords(sf::Mouse::getPosition(window));
           xcenter += before.x - after.x;
           ycenter += before.y - after.y;
         }
@@ -60,10 +62,12 @@ void Game::event() {
       } else if (event.mouseWheel.delta > 0) {
         if (zoom > 0.2) {
           view_change();
-          sf::Vector2f before = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+          sf::Vector2f before =
+              window.mapPixelToCoords(sf::Mouse::getPosition(window));
           zoom -= 0.1;
           view_change();
-          sf::Vector2f after = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+          sf::Vector2f after =
+              window.mapPixelToCoords(sf::Mouse::getPosition(window));
           xcenter += before.x - after.x;
           ycenter += before.y - after.y;
         }
@@ -162,6 +166,24 @@ void Game::draw() const {
   sf::Vector2f position = window.mapPixelToCoords(mousepos);
   sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
   window.draw(&dot, 1, sf::Points);
+#if HELP_MODE
+  sf::Font font;
+  if (font.loadFromFile("/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Medium.ttf")) {
+    sf::View view = window.getDefaultView();
+    window.setView(view);
+    sf::Text text;
+    text.setFont(font); // font is a sf::Font
+    text.setString(std::to_string((int)position.x) + ", " + std::to_string((int)position.y));
+    text.setCharacterSize(24); // in pixels, not points!
+    text.setFillColor(colors[color]);
+    sf::FloatRect pos = text.getGlobalBounds();
+    text.setPosition((width - pos.width) - 20, (height-pos.height) - 20);
+    window.draw(text);
+    view_change();
+  } else {
+    std::cout << "Error: Failed loading font from a file" << std::endl;
+  }
+#endif
 }
 
 void Game::drawLine(int x, int y, int endx, int endy) {

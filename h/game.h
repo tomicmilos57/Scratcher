@@ -47,7 +47,7 @@ private:
   void decColor() { color > 0 ? color -= 1 : color = 6; }
   void insert_pixel(Stroke *, const Point&);
   void clear_stack();
-  void view_change();
+  void view_change() const;
   friend Shape_Rect;
   friend Shape_Dot;
   friend Shape_Circle;

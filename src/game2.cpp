@@ -15,7 +15,7 @@ void Game::clear_stack() {
     stack_undo.pop();
   }
 }
-void Game::view_change() {
+void Game::view_change() const{
   sf::View view = window.getDefaultView();
   view.setCenter(xcenter, ycenter);
   view.zoom(zoom);
