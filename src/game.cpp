@@ -130,7 +130,7 @@ void Game::event() {
 
 void Game::draw() const {
   //sf::VertexArray va;
-  for (const sf::Drawable *stroke : arr) {
+  for (const auto& stroke : arr) {
     window.draw(*stroke);
    /*  for (auto &point : stroke->arr) {
       va.append(

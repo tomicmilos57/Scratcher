@@ -65,7 +65,7 @@ public:
 class Shape_Select : public Shape {
 private:
   sf::RectangleShape *select_overlay;
-  std::set<Stroke *> container;
+  std::set<sf::Shape *> container;
   bool phase2 = false;
 
 public:
@@ -81,6 +81,6 @@ public:
   void clear();
 
 private:
-  bool stroke_inside_select(Stroke *);
+  bool stroke_inside_select(sf::Shape *);
 };
 #endif

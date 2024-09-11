@@ -116,11 +116,8 @@ void Shape_Select::onClick(Point &prev, Point &p, bool &newstroke) {
       prev = p;
       auto oldPos = select_overlay->getPosition();
       select_overlay->setPosition(oldPos.x + dx, oldPos.y + dy);
-      for (Stroke *stroke : container) {
-        for (Point &p : stroke->arr) {
-          p.x += dx;
-          p.y += dy;
-        }
+      for (sf::Shape *elem : container) {
+        elem->move(dx, dy);
       }
     }
   }
@@ -129,26 +126,27 @@ void Shape_Select::drawOverlay(bool newstroke) const {
   game->window.draw(*select_overlay);
 }
 void Shape_Select::insert() {
-  /* if(!phase2){
-          for(auto stroke : game->arr){
-                  if(stroke_inside_select(stroke)){
-                          //std::cout << "Match" << std::endl;
-                          container.insert(stroke);
-                          phase2 = true;
-                  }else{
-                          //std::cout << "Not_match" << std::endl;
-                  }
-          }
-          if(!phase2) clear();
-  }else{
-          //implement undo for select_mode
-  } */
+  if (!phase2) {
+    for (auto &stroke : game->arr) {
+      if (stroke_inside_select(stroke)) {
+        // std::cout << "Match" << std::endl;
+        container.insert(stroke);
+        phase2 = true;
+      } else {
+        // std::cout << "Not_match" << std::endl;
+      }
+    }
+    if (!phase2)
+      clear();
+  } else {
+    // implement undo for select_mode
+  }
 }
-bool Shape_Select::stroke_inside_select(Stroke *stroke) {
+bool Shape_Select::stroke_inside_select(sf::Shape *elem) {
   // std::cout << "Xbegin: "<< select_overlay->getPosition().x << " Xend: " <<
   // select_overlay->getPosition().x + select_overlay->getSize().x
   //	<< " Ybegin: " << select_overlay->getPosition().y << " Yend: " <<
-  //select_overlay->getPosition().y + select_overlay->getSize().y << std::endl;
+  // select_overlay->getPosition().y + select_overlay->getSize().y << std::endl;
   auto startx = select_overlay->getPosition().x;
   auto starty = select_overlay->getPosition().y;
   auto width = startx + select_overlay->getSize().x;
@@ -157,8 +155,13 @@ bool Shape_Select::stroke_inside_select(Stroke *stroke) {
   auto endx = std::max(startx, width);
   auto beginy = std::min(starty, height);
   auto endy = std::max(starty, height);
-  for (auto &p : stroke->arr) {
-    if (!(p.x >= beginx && p.x <= endx && p.y >= beginy && p.y <= endy)) {
+  int startposx = elem->getPosition().x;
+  int startposy = elem->getPosition().y;
+  for (int i = 0; i < elem->getPointCount(); i++) {
+    if (!(startposx + elem->getPoint(i).x >= beginx &&
+          startposx + elem->getPoint(i).x <= endx &&
+          startposy + elem->getPoint(i).y >= beginy &&
+          startposy + elem->getPoint(i).y <= endy)) {
       return false;
     }
   }

@@ -2,6 +2,7 @@
 #define Game_Scratcher
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Mouse.hpp>
@@ -10,11 +11,12 @@
 #include <set>
 #include <stack>
 class Point;
+class DrawableTransformable : public sf::Drawable, public sf::Transformable {};
 class Game {
 private:
   sf::RenderWindow &window;
-  std::vector<sf::Drawable *> arr;
-  std::stack<sf::Drawable *> stack_undo;
+  std::vector<sf::Shape *> arr;
+  std::stack<sf::Shape  *> stack_undo;
   int width;
   int height;
   float zoom = 1;

@@ -9,7 +9,7 @@ using namespace std;
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1024
 #define FPS 60
-#define DEBUGMODE 1
+#define DEBUGMODE 0
 #define BENCHMARK 0
 int main() {
   cout << "WSL~!" << endl;

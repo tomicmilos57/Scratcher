@@ -1,4 +1,5 @@
 *.md
+TODO.txt
 build/*
 *.out
 Scratcher
