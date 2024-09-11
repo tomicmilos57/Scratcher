@@ -13,7 +13,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <math.h>
-#define HELP_MODE 1
+#define HELP_TEXT 1
 sf::Color Game::colors[] = {
     sf::Color::White,   sf::Color::Blue, sf::Color::Cyan,  sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,  sf::Color::Yellow};
@@ -166,18 +166,22 @@ void Game::draw() const {
   sf::Vector2f position = window.mapPixelToCoords(mousepos);
   sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
   window.draw(&dot, 1, sf::Points);
-#if HELP_MODE
+#if HELP_TEXT
   sf::Font font;
-  if (font.loadFromFile("/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Medium.ttf")) {
+  if (font.loadFromFile(
+          "/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Medium.ttf")) {
     sf::View view = window.getDefaultView();
     window.setView(view);
     sf::Text text;
     text.setFont(font); // font is a sf::Font
-    text.setString(std::to_string((int)position.x) + ", " + std::to_string((int)position.y));
+    text.setString(std::to_string((int)position.x) + ", " +
+                   std::to_string((int)position.y));
     text.setCharacterSize(24); // in pixels, not points!
     text.setFillColor(colors[color]);
     sf::FloatRect pos = text.getGlobalBounds();
-    text.setPosition((width - pos.width) - 20, (height-pos.height) - 20);
+    text.setPosition(
+        (window.getSize().x - window.getPosition().x - pos.width) - 20,
+        (window.getSize().y - window.getPosition().y - pos.height) - 20);
     window.draw(text);
     view_change();
   } else {

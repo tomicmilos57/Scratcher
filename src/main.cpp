@@ -30,7 +30,7 @@ int main() {
   int yrows = 1080;
   bool writeElapsedTimeOnce = false;
   sf::Clock totalTimeClock;
-  sf::Time totalTimeBegin = clock.getElapsedTime();
+  sf::Time totalTimeBegin = totalTimeClock.getElapsedTime();
   sf::Time totalTimeElapsed;
 #endif
   while (window.isOpen()) {
@@ -41,7 +41,7 @@ int main() {
     if (counter < yrows) {
       scratcher.drawLine(0, counter, 1920, counter);
       counter++;
-      totalTimeElapsed = clock.getElapsedTime();
+      totalTimeElapsed = totalTimeClock.getElapsedTime();
     } else if (!writeElapsedTimeOnce){
       std::cout << "Benchmark time: "
                 << (totalTimeElapsed.asSeconds() - totalTimeBegin.asSeconds())
