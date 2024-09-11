@@ -46,7 +46,6 @@ private:
   void incColor() { color < 6 ? color += 1 : color = 0; }
   void decColor() { color > 0 ? color -= 1 : color = 6; }
   void insert_pixel(Stroke *, const Point&);
-  void fill_line(Stroke *, int, int, int, int);
   void clear_stack();
   void view_change();
   friend Shape_Rect;

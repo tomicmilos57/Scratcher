@@ -1,4 +1,5 @@
 #include "../h/game.h"
+#include "../h/point.h"
 #include "../h/shape.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -7,11 +8,11 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <math.h>
-#include "../h/point.h"
 
 sf::Color Game::colors[] = {
     sf::Color::White,   sf::Color::Blue, sf::Color::Cyan,  sf::Color::Green,
@@ -46,12 +47,26 @@ void Game::event() {
     if (event.type == sf::Event::MouseWheelMoved &&
         sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
       if (event.mouseWheel.delta < 0) {
-        if (zoom < 2.5)
+        if (zoom < 2.5) {
+          view_change();
+          sf::Vector2f before = window.mapPixelToCoords(sf::Mouse::getPosition(window));
           zoom += 0.1;
+          view_change();
+          sf::Vector2f after = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+          xcenter += before.x - after.x;
+          ycenter += before.y - after.y;
+        }
         view_change();
       } else if (event.mouseWheel.delta > 0) {
-        if (zoom > 0.2)
+        if (zoom > 0.2) {
+          view_change();
+          sf::Vector2f before = window.mapPixelToCoords(sf::Mouse::getPosition(window));
           zoom -= 0.1;
+          view_change();
+          sf::Vector2f after = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+          xcenter += before.x - after.x;
+          ycenter += before.y - after.y;
+        }
         view_change();
       }
     } else if (event.type == sf::Event::MouseWheelMoved &&
@@ -129,16 +144,16 @@ void Game::event() {
 }
 
 void Game::draw() const {
-  //sf::VertexArray va;
-  for (const auto& stroke : arr) {
+  // sf::VertexArray va;
+  for (const auto &stroke : arr) {
     window.draw(*stroke);
-   /*  for (auto &point : stroke->arr) {
-      va.append(
-          sf::Vertex(sf::Vector2f(point.x, point.y), colors[point.color]));
-    } */
+    /*  for (auto &point : stroke->arr) {
+       va.append(
+           sf::Vertex(sf::Vector2f(point.x, point.y), colors[point.color]));
+     } */
   }
 
-  //window.draw(va);
+  // window.draw(va);
 
   // Drawing overlay
   shape->drawOverlay(newstroke);
@@ -149,8 +164,8 @@ void Game::draw() const {
   window.draw(&dot, 1, sf::Points);
 }
 
-void Game::drawLine(int x, int y, int endx, int endy){
-  Point p1 = Point(x,y);
+void Game::drawLine(int x, int y, int endx, int endy) {
+  Point p1 = Point(x, y);
   Point p2 = Point(endx, endy);
   bool newstrk = false;
   line.onClick(p1, p2, newstrk);
