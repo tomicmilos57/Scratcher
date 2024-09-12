@@ -31,7 +31,11 @@ void Game::event() {
       sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
       width = event.size.width;
       height = event.size.height;
-      window.setView(sf::View(visibleArea));
+      std::cout << "Width and Height: " << width << ", " << height << std::endl;
+      std::cout << "Window size: " << window.getSize().x << ", " << window.getSize().y << std::endl;
+      std::cout << "Window Position: " << window.getPosition().x << ", " << window.getPosition().y << std::endl;
+      //view_change();
+      //window.setView(sf::View(visibleArea));
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
       sf::Vector2i mousepos = sf::Mouse::getPosition(window);
@@ -173,15 +177,15 @@ void Game::draw() const {
     sf::View view = window.getDefaultView();
     window.setView(view);
     sf::Text text;
-    text.setFont(font); // font is a sf::Font
+    text.setFont(font); 
     text.setString(std::to_string((int)position.x) + ", " +
                    std::to_string((int)position.y));
-    text.setCharacterSize(24); // in pixels, not points!
+    text.setCharacterSize(24); 
     text.setFillColor(colors[color]);
     sf::FloatRect pos = text.getGlobalBounds();
     text.setPosition(
-        (window.getSize().x - window.getPosition().x - pos.width) - 20,
-        (window.getSize().y - window.getPosition().y - pos.height) - 20);
+        (window.getSize().x + window.getPosition().x - pos.width) - 20,
+        (window.getSize().y + window.getPosition().y - pos.height) - 40);
     window.draw(text);
     view_change();
   } else {

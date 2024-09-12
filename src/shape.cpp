@@ -157,7 +157,7 @@ bool Shape_Select::stroke_inside_select(sf::Shape *elem) {
   auto endy = std::max(starty, height);
   int startposx = elem->getPosition().x;
   int startposy = elem->getPosition().y;
-  for (int i = 0; i < elem->getPointCount(); i++) {
+  for (size_t i = 0; i < elem->getPointCount(); i++) {
     if (!(startposx + elem->getPoint(i).x >= beginx &&
           startposx + elem->getPoint(i).x <= endx &&
           startposy + elem->getPoint(i).y >= beginy &&

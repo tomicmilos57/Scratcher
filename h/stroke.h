@@ -11,7 +11,7 @@ public:
   std::vector<Point> arr;
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
       states.transform *= getTransform();
-    for (int i = 0; i < arr.size() - 1; i++) {
+    for (size_t i = 0; i < arr.size() - 1; i++) {
       sf::VertexArray line_overlay(sf::LineStrip, 2);
       line_overlay[0].position = sf::Vector2f(arr[i].x, arr[i].y);
       line_overlay[0].color = Game::colors[arr[i].color];
