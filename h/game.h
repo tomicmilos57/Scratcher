@@ -38,8 +38,9 @@ public:
   void event();
   void draw() const;
 
-
+  //API
   void drawLine(int x, int y, int endx, int endy);
+  void drawFPS(int fps)const;
 private:
   void saveGame() const;
   void loadGame();

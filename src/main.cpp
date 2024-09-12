@@ -9,8 +9,8 @@ using namespace std;
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1024
 #define FPS 60
-#define DEBUGMODE 0
-#define BENCHMARK 0
+#define DEBUGMODE 1
+#define BENCHMARK 1
 int main() {
   cout << "WSL~!" << endl;
   sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
@@ -49,18 +49,19 @@ int main() {
       writeElapsedTimeOnce = true;
     }
 #endif
-    scratcher.draw();
-    window.display();
 #if DEBUGMODE
     currentTime = clock.getElapsedTime();
     fps = 1.0f / (currentTime.asSeconds() -
                   previousTime.asSeconds()); // the asSeconds returns a float
+    scratcher.drawFPS(std::floor(fps));
     std::string str = std::to_string(std::floor(fps));
     std::cout
         << str[0] << str[1] << str[2] << str[3]
         << str[4]; // flooring it will make the frame rate a rounded number
     previousTime = currentTime;
 #endif
+    scratcher.draw();
+    window.display();
   }
 
   // scratcher.saveGame();

@@ -13,7 +13,6 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <math.h>
-#define HELP_TEXT 1
 sf::Color Game::colors[] = {
     sf::Color::White,   sf::Color::Blue, sf::Color::Cyan,  sf::Color::Green,
     sf::Color::Magenta, sf::Color::Red,  sf::Color::Yellow};
@@ -170,34 +169,5 @@ void Game::draw() const {
   sf::Vector2f position = window.mapPixelToCoords(mousepos);
   sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
   window.draw(&dot, 1, sf::Points);
-#if HELP_TEXT
-  sf::Font font;
-  if (font.loadFromFile(
-          "/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Medium.ttf")) {
-    sf::View view = window.getDefaultView();
-    window.setView(view);
-    sf::Text text;
-    text.setFont(font); 
-    text.setString(std::to_string((int)position.x) + ", " +
-                   std::to_string((int)position.y));
-    text.setCharacterSize(24); 
-    text.setFillColor(colors[color]);
-    sf::FloatRect pos = text.getGlobalBounds();
-    text.setPosition(
-        (window.getSize().x + window.getPosition().x - pos.width) - 20,
-        (window.getSize().y + window.getPosition().y - pos.height) - 40);
-    window.draw(text);
-    view_change();
-  } else {
-    std::cout << "Error: Failed loading font from a file" << std::endl;
-  }
-#endif
 }
 
-void Game::drawLine(int x, int y, int endx, int endy) {
-  Point p1 = Point(x, y);
-  Point p2 = Point(endx, endy);
-  bool newstrk = false;
-  line.onClick(p1, p2, newstrk);
-  line.insert();
-}
