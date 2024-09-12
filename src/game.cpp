@@ -30,11 +30,12 @@ void Game::event() {
       sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
       width = event.size.width;
       height = event.size.height;
-      std::cout << "Width and Height: " << width << ", " << height << std::endl;
-      std::cout << "Window size: " << window.getSize().x << ", " << window.getSize().y << std::endl;
-      std::cout << "Window Position: " << window.getPosition().x << ", " << window.getPosition().y << std::endl;
-      //view_change();
-      //window.setView(sf::View(visibleArea));
+      // std::cout << "Width and Height: " << width << ", " << height <<
+      // std::endl; std::cout << "Window size: " << window.getSize().x << ", "
+      // << window.getSize().y << std::endl; std::cout << "Window Position: " <<
+      // window.getPosition().x << ", " << window.getPosition().y << std::endl;
+      // view_change();
+      // window.setView(sf::View(visibleArea));
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
       sf::Vector2i mousepos = sf::Mouse::getPosition(window);
@@ -132,6 +133,10 @@ void Game::event() {
         incColor();
       if (event.key.scancode == sf::Keyboard::Scan::Down)
         decColor();
+      if (event.key.scancode == sf::Keyboard::Scan::Right)
+        incRadius();
+      if (event.key.scancode == sf::Keyboard::Scan::Left)
+        decRadius();
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) &&
           sf::Keyboard::isKeyPressed(sf::Keyboard::Z) &&
           sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
@@ -170,4 +175,3 @@ void Game::draw() const {
   sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
   window.draw(&dot, 1, sf::Points);
 }
-

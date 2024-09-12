@@ -4,13 +4,12 @@
 #include <SFML/Window/Mouse.hpp>
 #include <cmath>
 #include <iostream>
-#include <string>
 using namespace std;
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1024
 #define FPS 60
 #define DEBUGMODE 1
-#define BENCHMARK 1
+#define BENCHMARK 0
 int main() {
   cout << "WSL~!" << endl;
   sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
@@ -34,7 +33,7 @@ int main() {
   sf::Time totalTimeElapsed;
 #endif
   while (window.isOpen()) {
-    std::cout << "\b\b\b\b\b";
+    // std::cout << "\b\b\b\b\b";
     window.clear();
     scratcher.event();
 #if BENCHMARK
@@ -42,25 +41,25 @@ int main() {
       scratcher.drawLine(0, counter, 1920, counter);
       counter++;
       totalTimeElapsed = totalTimeClock.getElapsedTime();
-    } else if (!writeElapsedTimeOnce){
+    } else if (!writeElapsedTimeOnce) {
       std::cout << "Benchmark time: "
                 << (totalTimeElapsed.asSeconds() - totalTimeBegin.asSeconds())
                 << std::endl;
       writeElapsedTimeOnce = true;
     }
 #endif
+    scratcher.draw();
 #if DEBUGMODE
     currentTime = clock.getElapsedTime();
     fps = 1.0f / (currentTime.asSeconds() -
                   previousTime.asSeconds()); // the asSeconds returns a float
     scratcher.drawFPS(std::floor(fps));
-    std::string str = std::to_string(std::floor(fps));
-    std::cout
-        << str[0] << str[1] << str[2] << str[3]
-        << str[4]; // flooring it will make the frame rate a rounded number
+    // std::string str = std::to_string(std::floor(fps));
+    // std::cout
+        // << str[0] << str[1] << str[2] << str[3]
+        // << str[4]; // flooring it will make the frame rate a rounded number
     previousTime = currentTime;
 #endif
-    scratcher.draw();
     window.display();
   }
 

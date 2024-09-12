@@ -24,7 +24,7 @@ void Game::view_change() const {
 void Game::drawLine(int x, int y, int endx, int endy) {
   Point p1 = Point(x, y);
   Point p2 = Point(endx, endy);
-  bool newstrk = false;
+  bool newstrk = true;
   line.onClick(p1, p2, newstrk);
   line.insert();
 }
@@ -53,7 +53,7 @@ void Game::drawFPS(int fps) const {
     textfps.setString(std::to_string((int)fps));
     textfps.setCharacterSize(24);
     textfps.setFillColor(colors[color]);
-    sf::FloatRect fpspos = textfps.getGlobalBounds();
+    sf::FloatRect fpspos = textfps.getLocalBounds();
     textfps.setPosition((1920 - fpspos.width) - 20, 20);
     window.draw(textfps);
 

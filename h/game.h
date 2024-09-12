@@ -6,12 +6,11 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include "point.h"
 #include "shape.h"
 #include <iostream>
 #include <set>
 #include <stack>
-class Point;
-class DrawableTransformable : public sf::Drawable, public sf::Transformable {};
 class Game {
 private:
   sf::RenderWindow &window;
@@ -19,6 +18,7 @@ private:
   std::stack<sf::Shape  *> stack_undo;
   int width;
   int height;
+  int radius = 3;
   float zoom = 1;
   float xcenter;
   float ycenter;
@@ -46,6 +46,8 @@ private:
   void loadGame();
   void incColor() { color < 6 ? color += 1 : color = 0; }
   void decColor() { color > 0 ? color -= 1 : color = 6; }
+  void incRadius() {if(radius < 20)radius++;}
+  void decRadius() {if(radius > 3)radius--;}
   void insert_pixel(Stroke *, const Point&);
   void clear_stack();
   void view_change() const;

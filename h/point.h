@@ -1,3 +1,5 @@
+#ifndef point_h
+#define point_h
 #include <iostream>
 // TODO Copy contructor sf::Vector2i --> Point i.e Point(sf::Vector2i)
 struct Point {
@@ -5,7 +7,7 @@ struct Point {
   float y;
   int color; //use uint8 instead of int
   //int layer = 0;
-  Point(float xx, float yy, int color = 0)
+  Point(float xx = 0, float yy = 0, int color = 0)
       : x(xx), y(yy), color(color) {}
   friend bool operator==(const Point &a, const Point &b) {
     return a.x == b.x && a.y == b.y;
@@ -27,3 +29,4 @@ struct Point {
     os >> p.y;
   }
 };
+#endif

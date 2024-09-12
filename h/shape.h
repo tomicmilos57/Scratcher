@@ -5,7 +5,8 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Shape.hpp>
 #include <set>
-class Point;
+#include "line.h"
+#include "point.h"
 class Game;
 class Stroke;
 class Shape { // Abstract class
@@ -53,9 +54,7 @@ public:
 };
 class Shape_Line : public Shape {
 private:
-  sf::Vertex line_overlay[2];
-  int color = 0;
-
+  sfLine *line;
 public:
   Shape_Line(Game *g) : Shape(g) {}
   void onClick(Point &prev, Point &p, bool &newstroke);
