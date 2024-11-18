@@ -32,6 +32,8 @@ void Shape_Dot::onClick(Point &prev, Point &p, bool &newstroke) {
     newstroke = false;
     stroke = new Stroke();
     game->arr.push_back(stroke);
+    stroke->color = Game::colors[game->color];
+    stroke->radius = game->radius;
   }
   stroke->addPoint(p);
   prev = p;
