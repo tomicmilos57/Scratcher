@@ -25,15 +25,15 @@ void Shape_Rect::drawOverlay(bool newstroke) const {
 }
 void Shape_Rect::insert() { game->arr.push_back(rect_overlay); }
 void Shape_Dot::onClick(Point &prev, Point &p, bool &newstroke) {
-  static Stroke *stroke = new Stroke;
+  static Stroke *stroke = new Stroke(p, game->radius, Game::colors[game->color]);
   if (newstroke) { // this could be improved
     game->clear_stack();
     prev = p;
     newstroke = false;
-    stroke = new Stroke();
+    stroke = new Stroke(p, game->radius, Game::colors[game->color]);
     game->arr.push_back(stroke);
-    stroke->color = Game::colors[game->color];
-    stroke->radius = game->radius;
+   // stroke->color = Game::colors[game->color];
+   // stroke->radius = game->radius;
   }
   stroke->addPoint(p);
   prev = p;
