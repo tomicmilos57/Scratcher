@@ -66,8 +66,8 @@ public:
   }
 
 private:
-  void drawCircle(int x, int y){
-    sf::CircleShape circle;
+  inline void drawCircle(int x, int y){
+    static sf::CircleShape circle;
     circle.setFillColor(color);
     circle.setOutlineThickness(1);
     circle.setRadius(radius); // sf::Vector2f(p.x - prev.x, p.y - prev.y));

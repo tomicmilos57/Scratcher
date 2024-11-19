@@ -173,5 +173,12 @@ void Game::draw() const {
   sf::Vector2i mousepos = sf::Mouse::getPosition(window);
   sf::Vector2f position = window.mapPixelToCoords(mousepos);
   sf::Vertex dot(sf::Vector2f(position.x, position.y), colors[color]);
-  window.draw(&dot, 1, sf::Points);
+  sf::CircleShape circle;
+  circle.setFillColor(colors[color]);
+  circle.setOutlineThickness(1);
+  circle.setRadius(radius/2); // sf::Vector2f(p.x - prev.x, p.y - prev.y));
+  circle.setPosition(position.x - radius/2, position.y - radius/2);
+  circle.setOutlineColor(colors[color]);
+  window.draw(circle);
+  //window.draw(&dot, 1, sf::Points);
 }
